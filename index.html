@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>공정 시뮬레이터 v0.1 — arcrush</title>
+    <meta name="description" content="IFC 모델에서 공정 순서를 규칙으로 도출해 브라우저에서 재생하는 BIM 공정 시뮬레이터" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header id="top">
+      <div class="brand"><a href="https://arcrush.kr">arcrush</a> · 공정 시뮬레이터 <span class="ver">v0.1</span></div>
+      <div class="controls">
+        <label>샘플
+          <select id="model-select">
+            <option value="/models/duplex.ifc">Duplex Apartment (IFC2X3, 4층)</option>
+            <option value="/models/fzk-haus.ifc">FZK-Haus (IFC4, 2층)</option>
+          </select>
+        </label>
+        <label class="file">내 IFC 열기<input id="file-input" type="file" accept=".ifc" /></label>
+        <span id="status">준비 중…</span>
+      </div>
+    </header>
+
+    <main>
+      <aside id="left">
+        <h2>공정표 <small id="gantt-meta"></small></h2>
+        <div id="gantt"></div>
+      </aside>
+
+      <section id="viewport">
+        <canvas id="canvas"></canvas>
+        <div id="legend">
+          <span><i class="sw sw-active"></i>진행 중</span>
+          <span><i class="sw sw-curing"></i>양생 중</span>
+          <span><i class="sw sw-done"></i>완료</span>
+          <span><i class="sw sw-ghost"></i>예정(윤곽)</span>
+        </div>
+        <div id="hover-info"></div>
+      </section>
+
+      <aside id="right">
+        <h2>규칙</h2>
+        <p class="note">공정 순서는 모델의 층·부재 종류와 아래 규칙 표에서 자동으로 만듭니다. 수리·수량 산출을 거친 값이 아니며, 현장 조건에 따라 달라집니다.</p>
+        <div id="params"></div>
+        <h3>공종 매핑</h3>
+        <table id="trade-table"></table>
+        <h3>선후행 규칙</h3>
+        <ul id="rule-list"></ul>
+        <h3>미분류</h3>
+        <div id="unclassified" class="note">—</div>
+      </aside>
+    </main>
+
+    <footer id="timeline">
+      <button id="play" title="재생/일시정지">▶</button>
+      <input id="day" type="range" min="0" max="100" value="0" step="0.25" />
+      <div class="readout"><span id="day-label">0일</span><span id="phase-label"></span></div>
+      <label class="speed">속도
+        <select id="speed">
+          <option value="2">2일/초</option>
+          <option value="5" selected>5일/초</option>
+          <option value="10">10일/초</option>
+        </select>
+      </label>
+      <label class="ghost-toggle"><input id="ghost" type="checkbox" checked /> 예정 윤곽</label>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
