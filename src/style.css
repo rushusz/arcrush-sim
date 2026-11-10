@@ -1,3 +1,6 @@
+@font-face{font-family:Paperlogy;font-weight:200;font-display:swap;src:url(/fonts/Paperlogy-2ExtraLight.woff2) format("woff2")}
+@font-face{font-family:Paperlogy;font-weight:300;font-display:swap;src:url(/fonts/Paperlogy-3Light.woff2) format("woff2")}
+@font-face{font-family:Paperlogy;font-weight:400;font-display:swap;src:url(/fonts/Paperlogy-4Regular.woff2) format("woff2")}
 :root {
   --bg: #111214;
   --panel: #1a1b1e;
@@ -16,17 +19,24 @@
   --trade-envelope: #2980b9;
   --trade-finish: #27ae60;
   --trade-misc: #7f8c8d;
-  font-family: Pretendard, "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-family: Paperlogy, "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-weight: 300;
   font-size: 13px;
   color: var(--fg);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--bg); }
-body { display: grid; grid-template-rows: 44px 1fr 56px; height: 100vh; }
+body { display: grid; grid-template-rows: 44px 1fr auto; height: 100vh; height: 100dvh; }
 a { color: inherit; text-decoration: none; }
 
 #top { display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid var(--line); background: var(--panel); }
-.brand { font-weight: 600; letter-spacing: .02em; }
+.brand { font-weight: 400; display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.wm { display: inline-flex; align-items: baseline; letter-spacing: -.03em; font-size: 16px; }
+.wm i { font-style: normal; transition: font-weight .3s; }
+.wm .a { font-weight: 200; } .wm .r { font-weight: 400; }
+.wm .c { color: var(--accent); font-weight: 400; margin-left: .18em; transition: margin .5s cubic-bezier(.6,0,.2,1); }
+@media (hover: hover) { .wm:hover .c { margin-left: 0; margin-right: .18em; } .wm:hover .a { font-weight: 400; } .wm:hover .r { font-weight: 200; } }
+.sep { color: var(--muted); }
 .brand .ver { color: var(--muted); font-weight: 400; margin-left: 4px; }
 .controls { display: flex; gap: 14px; align-items: center; color: var(--muted); }
 .controls select, .controls button { background: #222; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 4px 6px; font: inherit; }
@@ -74,8 +84,8 @@ aside h3 { font-size: 12px; color: var(--muted); margin: 16px 0 6px; font-weight
 #rule-list { margin: 0; padding-left: 16px; color: var(--fg); line-height: 1.6; }
 
 /* Timeline */
-#timeline { display: flex; align-items: center; gap: 14px; padding: 0 14px; border-top: 1px solid var(--line); background: var(--panel); }
-#play { width: 36px; height: 32px; background: #222; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font-size: 14px; cursor: pointer; }
+#timeline { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 6px 14px calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--panel); }
+#play { flex: none; width: 44px; height: 44px; touch-action: manipulation; background: #222; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font-size: 14px; cursor: pointer; }
 #day { flex: 1; accent-color: var(--accent); }
 .readout { display: flex; flex-direction: column; min-width: 150px; font-variant-numeric: tabular-nums; }
 .readout #phase-label { color: var(--muted); font-size: 11px; }
@@ -83,7 +93,18 @@ aside h3 { font-size: 12px; color: var(--muted); margin: 16px 0 6px; font-weight
 .speed select { background: #222; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 3px 4px; font: inherit; }
 
 @media (max-width: 900px) {
-  main { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  body { grid-template-rows: auto 1fr auto; }
+  main { grid-template-columns: 1fr; grid-template-rows: 1fr; }
   #left { display: none; }
   #right { display: none; }
+  #top { flex-wrap: wrap; gap: 6px 12px; padding: 8px 14px; }
+  .controls { flex-wrap: wrap; gap: 8px; }
+  .controls select { max-width: 46vw; }
+  #status { display: none; }
+  #legend { flex-wrap: wrap; gap: 4px 10px; font-size: 11px; }
+  #hover-info { display: none; }
+  #timeline { flex-wrap: wrap; gap: 6px 12px; padding: 8px 14px calc(10px + env(safe-area-inset-bottom)); }
+  #day { order: 5; flex: 0 0 100%; height: 32px; margin: 0; }
+  .readout { flex: 1; min-width: 0; }
+  .ghost-toggle { display: none; }
 }
